@@ -1,0 +1,29 @@
+<h1>All Ideas</h1>
+<p>
+  <%= button_to "Make a New Idea", new_idea_path, :method => :get %>
+</p>
+<div>
+  <% @ideas.each do |idea| %>
+    <tr style="text-align:center">
+      <strong>Topic</strong>
+      <%= idea.title %>
+      <br />
+      <strong>Idea</strong>
+      <%= truncate(idea.text, length: 50) %>
+      <% if user_signed_in? %>
+      <td><%= link_to 'Edit', edit_idea_path(idea) %>
+      <%= link_to 'Delete', idea_path(idea),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %></td>
+    <% if idea.liked_by?(current_user) %>
+    <%= link_to "Unlike", idea_like_path(idea, idea.like_for(current_user)), method: :delete%>
+    <% else %>
+    <%= link_to "Like", idea_likes_path(idea), method: :post %>
+    <% end %>
+    </tr>
+<br />
+<br />
+  <% end %>
+  <br />
+</div>
+  <% end %>
