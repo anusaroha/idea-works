@@ -7,12 +7,12 @@ class IdeasController < ApplicationController
   end
 
   def edit
-    redirect_to root_path, alert: "access defined" unless can? :edit, @idea
+    @idea = Idea.find params[:id]
+    redirect_to ideas_path, alert: "access denined" unless can? :edit, @idea
   end
 
   def index
     @ideas = Idea.all
-    @ideas = Idea.order(created_at: :desc)
   end
 
   def create
@@ -28,9 +28,10 @@ class IdeasController < ApplicationController
   end
 
   def update
-    if @idea.update idea_params
-      redirect_to root_path, alert: "access defined" unless can? :update, @idea
+    if @idea.update(idea_params)
+      redirect_to(idea_path(@idea), flash: { success:  "Updated!"})
     else
+      flash[:warning] = "Update was not successful"
       render :edit
     end
   end
@@ -38,7 +39,7 @@ class IdeasController < ApplicationController
   def destroy
     @idea.destroy
     redirect_to ideas_path, notice: "Idea Deleted"
-    redirect_to root_path, alert: "Acess Denied" unless can? :destroy, @idea
+    redirect_to ideas_path, alert: "Acess Denied" unless can? :destroy, @idea
   end
 
 
@@ -58,7 +59,7 @@ class IdeasController < ApplicationController
 
     def authorize_user
       unless can? :manage, @idea
-      redirect_to root_path , flash: { info: "Access Denied" }
+      redirect_to ideas_path , alert: "Acess Denied"
       end
     end
 

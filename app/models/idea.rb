@@ -16,4 +16,6 @@ class Idea < ActiveRecord::Base
     likes.find_by(user: user)
     # likes.find_by_user_id user
   end
+
+
 end

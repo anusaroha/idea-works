@@ -4,26 +4,38 @@
 </p>
 <div>
   <% @ideas.each do |idea| %>
-    <tr style="text-align:center">
-      <strong>Topic</strong>
-      <%= idea.title %>
+  <div>
+    <strong>Topic</strong>
+      <%= link_to idea.title, idea_path(idea) %>
       <br />
-      <strong>Idea</strong>
-      <%= truncate(idea.text, length: 50) %>
-      <% if user_signed_in? %>
-      <td><%= link_to 'Edit', edit_idea_path(idea) %>
-      <%= link_to 'Delete', idea_path(idea),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %></td>
-    <% if idea.liked_by?(current_user) %>
-    <%= link_to "Unlike", idea_like_path(idea, idea.like_for(current_user)), method: :delete%>
-    <% else %>
-    <%= link_to "Like", idea_likes_path(idea), method: :post %>
-    <% end %>
-    </tr>
-<br />
-<br />
-  <% end %>
-  <br />
+    <strong>Idea</strong>
+    <%= truncate(idea.text, length: 50) %>
+      <br/>
+      <div >
+        <% if user_signed_in? %>
+          <%= link_to 'Edit', edit_idea_path(idea) %>
+          <%= link_to 'Delete', idea_path(idea),method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% if idea.user != current_user %>
+            <% like = idea.like_for(current_user) %>
+            <% if like %>
+              <%= link_to "Un-Like", idea_like_path(idea, idea.like_for(current_user)), method: :delete%>
+            <% else %>
+              <%= link_to "Like", idea_likes_path(idea), method: :post %>
+            <% end %>
+            <div align="right">
+              <strong>Likes:</strong> <%= idea.likes.count %>
+            </div>
+
+      </div>
+        <% else %>
+
+        <% end %>
+      <% end %>
+      <br/>
+      <hr />
+      <br />
+  </div>
+
+<% end %>
+
 </div>
-  <% end %>

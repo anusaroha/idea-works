@@ -11,7 +11,7 @@ class Ability
     #     can :read, :all
     #   end
     can :manage, Idea do |idea|
-      idea.user == user
+      idea.user_id == user.id
     end
 
 
