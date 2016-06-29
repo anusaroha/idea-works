@@ -16,20 +16,28 @@
           <%= link_to 'Edit', edit_idea_path(idea) %>
           <%= link_to 'Delete', idea_path(idea),method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <% if idea.user != current_user %>
+
             <% like = idea.like_for(current_user) %>
             <% if like %>
               <%= link_to "Un-Like", idea_like_path(idea, idea.like_for(current_user)), method: :delete%>
             <% else %>
               <%= link_to "Like", idea_likes_path(idea), method: :post %>
             <% end %>
-            <div align="right">
-              <strong>Likes:</strong> <%= idea.likes.count %>
-            </div>
 
+            <% join = idea.join_for(current_user) %>
+            <% if join %>
+              <%= link_to "Leave", idea_join_path(idea, idea.join_for(current_user)), method: :delete%>
+            <% else %>
+              <%= link_to "Join", idea_joins_path(idea), method: :post %>
+            <% end %>
       </div>
         <% else %>
 
         <% end %>
+      <div align="right">
+        <strong>Likes:</strong> <%= idea.likes.count %>
+        <strong>Members:</strong> <%= idea.joins.count %>
+      </div>
       <% end %>
       <br/>
       <hr />

@@ -16,9 +16,12 @@ Rails.application.routes.draw do
 
   resources :ideas do
     resources :likes, only: [:create, :destroy]
+    resources :joins, only: [:create, :destroy]
   end
 
   resources :likes, only: [:index]
+
+  resources :joins, only: [:index]
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
